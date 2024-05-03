@@ -10,12 +10,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-int main(int argc, char *argv[]) {
-    int *ppl, *lines;
-    if (argc != 3) {
-        fprintf(stderr, "2 Arguments expected");
-        exit(1);
-    }
-    ppl = (int*) argv[1];
-    lines = (int*) argv[2];
+int main() {
+  int ppl, num_lines;
+
+  int *lines = malloc(num_lines * sizeof(int));
+  for (int i = 0; i < num_lines; i++)
+    lines[i] = 0;
+  for (int j = 0; j < ppl; j++)
+    lines[j] += 1;
+  for (int ln = 0; ln < num_lines; ln++)
+    printf("%d ", ln);
 }
