@@ -11,9 +11,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 int main(int argc, char *argv[]) {
-    int ppl, lines;
+    int *ppl, *lines;
     if (argc != 3) {
         fprintf(stderr, "2 Arguments expected");
         exit(1);
     }
+    ppl = (int*) argv[1];
+    lines = (int*) argv[2];
 }
