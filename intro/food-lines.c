@@ -9,6 +9,11 @@
 // M is the second int
 
 #include <stdio.h>
-int main() {
-
+#include <stdlib.h>
+int main(int argc, char *argv[]) {
+    int ppl, lines;
+    if (argc != 3) {
+        fprintf(stderr, "2 Arguments expected");
+        exit(1);
+    }
 }
