@@ -52,8 +52,8 @@ int are_identical(int cmp1[], int cmp2[]) {
 }
 
 int main(void) {
-  int sample1[] = {1, 2, 3, 4, 5, 6};
-  int sample2[] = {4, 3, 2, 1, 6, 5};
+  int sample1[] = {213, 491, 12, 67, 962, 521};
+  int sample2[] = {12, 67, 962, 521, 213, 491};
   if (are_identical(sample1, sample2))
     printf("Twin snowflakes found.\n");
   else
