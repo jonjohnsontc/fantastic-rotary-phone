@@ -55,8 +55,8 @@ int main(void) {
   int sample1[] = {1, 2, 3, 4, 5, 6};
   int sample2[] = {4, 3, 2, 1, 6, 5};
   if (are_identical(sample1, sample2))
-    printf("No two snowflakes are alike.\n");
-  else
     printf("Twin snowflakes found.\n");
+  else
+    printf("No two snowflakes are alike.\n");
   return 0;
 }
