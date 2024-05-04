@@ -15,8 +15,7 @@
 #include <string.h>
 #define MAXSIZE 512
 
-int shortest_ln(int *arr, int len);
-int min(int a, int b);
+void smallest_int(const int *arr, int len, int *min_val, int *min_idx);
 
 int main() {
   int ppl, num_lines;
@@ -32,28 +31,31 @@ int main() {
   for (int i = 1; i < num_lines; i++) {
     lines[i] = atoi(strtok(NULL, " "));
   }
-  printf("Initial lines:\n");
-  for (int j = 0; j < num_lines; j++) {
-    printf("%d ", lines[j]);
-  }
-  printf("\n");
 
+  int min_idx = 0;
+  int min_val = 0;
   for (; ppl > 0; ppl--) {
-    int idx = shortest_ln(lines, num_lines);
-    printf("%d\n", lines[idx]);
-    lines[idx]++;
+    smallest_int(lines, num_lines, &min_val, &min_idx);
+    printf("%d\n", min_val);
+    lines[min_idx]++;
   }
 }
 
-int shortest_ln(int *arr, int len) {
-  int shorty = 101;
-  int i;
-  for (i = 0; i < len; i++) {
-    printf("Comparing %d and %d\n", shorty, arr[i]);
-    shorty = min(shorty, arr[i]);
-    printf("Min is %d\n", shorty);
+void smallest_int(const int *arr, int len, int *min_val, int *min_idx) {
+  if (len <= 0) {
+    *min_val = 0;
+    *min_idx = -1;
+    return;
   }
-  return i;
-}
 
-int min(int a, int b) {return a < b ? a : b;}
+  // set to initial values
+  *min_val = arr[0];
+  *min_idx = 0;
+
+  for (int i = 1; i < len; i++) {
+    if (arr[i] < *min_val) {
+      *min_val = arr[i];
+      *min_idx = i;
+    }
+  }
+}
