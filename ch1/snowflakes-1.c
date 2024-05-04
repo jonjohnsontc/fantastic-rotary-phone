@@ -1,9 +1,6 @@
 #include <stdio.h>
 #define MAX_FLAKES 100000 /* max number of snowflakes to be read from input */
 
-int identical_right(int cmp1[], int cmp2[], int start_i);
-int identical_left(int cmp1[], int cmp2[], int start_i);
-
 void identify_identical(int nums[], int len) {
   int i, j;
   for (i = 0; i < len; i++) {
@@ -27,6 +24,31 @@ int identical_right(int cmp1[], int cmp2[], int start_i) {
     }
   }
   return 1; /* return true */
+}
+
+int identical_left(int cmp1[], int cmp2[], int start_i) {
+  int offset, cmp2_i;
+  for (offset = 0; offset < 6; offset++) {
+    cmp2_i = start_i - offset; /* we're moving left*/
+    if (cmp2_i <= -1) {
+      cmp2_i = cmp2_i + 6;
+    }
+    if (cmp1[offset] != cmp2[cmp2_i]) {
+      return 0;
+    }
+  }
+  return 1;
+}
+
+int are_identical(int cmp1[], int cmp2[]) {
+  int start;
+  for (start = 0; start < 6; start++) {
+    if (identical_right(cmp1, cmp2, start))
+      return 1;
+    if (identical_left(cmp1, cmp2, start))
+      return 1;
+  }
+  return 0;
 }
 
 int main(void) {
