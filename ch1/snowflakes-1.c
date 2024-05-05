@@ -19,7 +19,7 @@ int identical_right(int cmp1[], int cmp2[], int start_i) {
   for (offset = 0; offset < 6; offset++) {
     // leveraging the modulo allows us to mimic array wraparound
     // behavior for indices >= 6
-    if (cmp1[offset] != cmp2[start_i + offset % 6]) {
+    if (cmp1[offset] != cmp2[(start_i + offset) % 6]) {
       return 0; /* return false */
     }
   }
