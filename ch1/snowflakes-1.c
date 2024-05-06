@@ -1,11 +1,13 @@
 #include <stdio.h>
 #define MAX_FLAKES 100000 /* max number of snowflakes to be read from input */
 
-void identify_identical(int nums[], int len) {
+int are_identical(int cmp1[], int cmp2[]);
+
+void identify_identical(int nums[][6], int len) {
   int i, j;
   for (i = 0; i < len; i++) {
     for (j = i + 1; j < len; j++) {
-      if (nums[i] == nums[j]) {
+      if (are_identical(nums[i], nums[j])) {
         printf("Twin snowflakes found.\n");
         return;
       }
@@ -52,11 +54,14 @@ int are_identical(int cmp1[], int cmp2[]) {
 }
 
 int main(void) {
+  static int snowflakes[MAX_FLAKES][6];
+  int n, i, j;
   int sample1[] = {213, 491, 12, 67, 962, 521};
   int sample2[] = {12, 67, 962, 521, 213, 491};
-  if (are_identical(sample1, sample2))
-    printf("Twin snowflakes found.\n");
-  else
-    printf("No two snowflakes are alike.\n");
+  scanf("%d", &n);
+  for (i = 0; i < n; i++)
+    for (j = 0; j < 6; j++)
+      scanf("%d", &snowflakes[i][j]);
+  identify_identical(snowflakes, n);
   return 0;
 }
