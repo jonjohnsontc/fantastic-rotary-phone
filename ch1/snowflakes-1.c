@@ -53,11 +53,14 @@ int are_identical(int cmp1[], int cmp2[]) {
   return 0;
 }
 
+int hash(int nums[6]) {
+  return (nums[0] + nums[1] + nums[2] + nums[3] + nums[4] + nums[5] + nums[6]) %
+         MAX_FLAKES;
+}
+
 int main(void) {
   static int snowflakes[MAX_FLAKES][6];
   int n, i, j;
-  int sample1[] = {213, 491, 12, 67, 962, 521};
-  int sample2[] = {12, 67, 962, 521, 213, 491};
   scanf("%d", &n);
   for (i = 0; i < n; i++)
     for (j = 0; j < 6; j++)
