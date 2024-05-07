@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #define MAX_FLAKES 100000 /* max number of snowflakes to be read from input */
 
 int are_identical(int cmp1[], int cmp2[]);
@@ -58,13 +59,29 @@ int hash(int nums[6]) {
          MAX_FLAKES;
 }
 
+typedef struct node {
+  int snowflake[6];
+  struct node *next;
+} node;
+
 int main(void) {
-  static int snowflakes[MAX_FLAKES][6];
-  int n, i, j;
+  static node *snowflakes[MAX_FLAKES] = {NULL};
+  node *snow;
+  int n, i, j, hashname;
   scanf("%d", &n);
-  for (i = 0; i < n; i++)
+  for (i = 0; i < n; i++) {
+    snow = malloc(sizeof(node));
+    if (snow == NULL) {
+      fprintf(stderr, "malloc error\n");
+      exit(1);
+    }
     for (j = 0; j < 6; j++)
-      scanf("%d", &snowflakes[i][j]);
-  identify_identical(snowflakes, n);
+      scanf("%d", &snow->snowflake[j]);
+    hashname = hash(snow->snowflake);
+    snow->next = snowflakes[hashname];
+    snowflakes[hashname] = snow;
+  }
+  identify_identical(snowflakes);
+  ;
   return 0;
 }
