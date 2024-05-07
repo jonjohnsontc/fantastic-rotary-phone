@@ -2,16 +2,28 @@
 #include <stdlib.h>
 #define MAX_FLAKES 100000 /* max number of snowflakes to be read from input */
 
+typedef struct node {
+  int snowflake[6];
+  struct node *next;
+} node;
+
 int are_identical(int cmp1[], int cmp2[]);
 
-void identify_identical(int nums[][6], int len) {
-  int i, j;
-  for (i = 0; i < len; i++) {
-    for (j = i + 1; j < len; j++) {
-      if (are_identical(nums[i], nums[j])) {
-        printf("Twin snowflakes found.\n");
-        return;
+void identify_identical(node *nodes[]) {
+  node *n1, *n2;
+  int i;
+  for (i = 0; i < MAX_FLAKES; i++) {
+    n1 = nodes[i];
+    while (n1 != NULL) {
+      n2 = n1->next;
+      while (n2 != NULL) {
+        if (are_identical(n1->snowflake, n2->snowflake)) {
+          printf("Twin snowflakes found.\n");
+          return;
+        }
+        n2 = n2->next;
       }
+      n1 = n1->next;
     }
   }
   printf("No two snowflakes are alike.\n");
@@ -59,11 +71,6 @@ int hash(int nums[6]) {
          MAX_FLAKES;
 }
 
-typedef struct node {
-  int snowflake[6];
-  struct node *next;
-} node;
-
 int main(void) {
   static node *snowflakes[MAX_FLAKES] = {NULL};
   node *snow;
@@ -82,6 +89,5 @@ int main(void) {
     snowflakes[hashname] = snow;
   }
   identify_identical(snowflakes);
-  ;
   return 0;
 }
