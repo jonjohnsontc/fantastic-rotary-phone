@@ -66,7 +66,7 @@ int are_identical(int cmp1[], int cmp2[]) {
   return 0;
 }
 
-int hash(int nums[6]) {
+int hash(int nums[7]) {
   return (nums[0] + nums[1] + nums[2] + nums[3] + nums[4] + nums[5] + nums[6]) %
          MAX_FLAKES;
 }
