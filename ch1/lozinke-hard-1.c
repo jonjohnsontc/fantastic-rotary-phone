@@ -49,6 +49,7 @@ void add_to_hash_table(password_node *hash_table[], char *find) {
   unsigned password_code;
   password_node *password_ptr;
   password_ptr = in_hash_table(hash_table, find);
+
   if (!password_ptr) {
     password_code = oaat(find, strlen(find), NUM_BITS);
     password_ptr = malloc(sizeof(password_node));
@@ -64,6 +65,8 @@ void add_to_hash_table(password_node *hash_table[], char *find) {
   password_ptr->total++;
 }
 
+// bugged!
+
 int main(void) {
   static password_node *hash_table[1 << NUM_BITS] = {NULL};
   int num_ops, op, op_type, i, j;
@@ -75,11 +78,11 @@ int main(void) {
 
     if (op_type == 1) {
       for (i = 0; i < strlen(password); i++)
-        for (j = 1; j < strlen(password); j++) {
+        for (j = i; j < strlen(password); j++) {
           strncpy(substring, &password[i], j - i + 1);
           substring[j - i + 1] = '\0';
           add_to_hash_table(hash_table, substring);
-      }
+        }
     } else {
       password_ptr = in_hash_table(hash_table, password);
       if (!password_ptr)
@@ -88,4 +91,5 @@ int main(void) {
         printf("%d\n", password_ptr->total);
     }
   }
+  return 0;
 }
