@@ -17,9 +17,9 @@ unsigned long oaat(char *key, unsigned long len, unsigned long bits) {
 }
 
 int main(void) {
-    char word[] = "hello";
-    // 2 ^17 is the smallest power of 2 that is at least 100000
-    unsigned long code = oaat(word, strlen(word), 17);
-    printf("%lu\n", code);
-    return 0;
-}   
+  char word[] = "e";
+  // 2 ^17 is the smallest power of 2 that is at least 100000
+  unsigned long code = oaat(word, strlen(word), 17);
+  printf("%lu\n", code);
+  return 0;
+}

@@ -63,3 +63,29 @@ void add_to_hash_table(password_node *hash_table[], char *find) {
   }
   password_ptr->total++;
 }
+
+int main(void) {
+  static password_node *hash_table[1 << NUM_BITS] = {NULL};
+  int num_ops, op, op_type, i, j;
+  char password[PASSWORD_MAX + 1], substring[PASSWORD_MAX + 1];
+  password_node *password_ptr;
+  scanf("%d", &num_ops);
+  for (op = 0; op < num_ops; op++) {
+    scanf("%d%s", &op_type, password);
+
+    if (op_type == 1) {
+      for (i = 0; i < strlen(password); i++)
+        for (j = 1; j < strlen(password); j++) {
+          strncpy(substring, &password[i], j - i + 1);
+          substring[j - i + 1] = '\0';
+          add_to_hash_table(hash_table, substring);
+      }
+    } else {
+      password_ptr = in_hash_table(hash_table, password);
+      if (!password_ptr)
+        printf("0\n");
+      else
+        printf("%d\n", password_ptr->total);
+    }
+  }
+}
