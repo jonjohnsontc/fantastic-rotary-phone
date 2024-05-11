@@ -48,6 +48,7 @@ int main(void) {
   char *word = malloc(sizeof(char) * STRING_MAX);
   char *corrected = malloc(sizeof(char) * STRING_MAX - 1);
   scanf("%s%s", word, corrected);
+  
   int i = 0, j = i;
   int num_indices = 0;
   int *corrected_idx;
