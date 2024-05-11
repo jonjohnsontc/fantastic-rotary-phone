@@ -56,7 +56,7 @@ int main(void) {
   while (i < strlen(word)) {
     if (i > j + 1) {
       printf("0\n");
-      break;
+      exit(0);
     } 
     if (word[i] != corrected[j]) {
       corrected_idx = malloc(sizeof(int));
@@ -82,13 +82,13 @@ int main(void) {
 
     if (left_indices > 0) {
       for (; left_indices > 0; left_indices--) 
-        printf("%d ", (*corrected_idx) - left_indices);
+        printf("%d ", (*corrected_idx) - left_indices + 1);
     }
-    printf("%d ", *corrected_idx);
+    printf("%d ", *corrected_idx + 1);
     
     if (right_indices > 0) {
       for (int idx = 1; idx <= right_indices; idx++)
-        printf("%d ", (*corrected_idx) + idx);
+        printf("%d ", (*corrected_idx) + idx + 1);
     }
     printf("\n");
   }
