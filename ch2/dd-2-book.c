@@ -79,3 +79,51 @@ int score_one(node *n, int d) {
     total = total + score_one(n->children[i], d - 1);
   return total;
 }
+
+void score_all(node **nodes, int num_nodes, int d) {
+  int i;
+  for (i = 0; i < num_nodes; i++)
+    nodes[i]->score = score_one(nodes[i], d);
+}
+
+int compare(const void *v1, const void *v2) {
+  const node *n1 = *(const node **)v1;
+  const node *n2 = *(const node **)v2;
+  if (n1->score > n2->score)
+    return -1;
+  if (n1->score < n2->score)
+    return 1;
+  return strcmp(n1->name, n2->name);
+}
+
+void output_info(node *nodes[], int num_nodes) {
+  int i = 0;
+  while (i < 3 && i < num_nodes && nodes[i]->score > 0) {
+    printf("%s %d\n", nodes[i]->name, nodes[i]->score);
+    i++;
+    while (i < num_nodes && nodes[i]->score == nodes[i - 1]->score) {
+      printf("%s %d\n", nodes[i]->name, nodes[i]->score);
+      i++;
+    }
+  }
+}
+
+#define MAX_NODES 1000
+
+int main(void) {
+  int num_cases, case_num;
+  int n, d, num_nodes;
+  node **nodes = malloc_safe(sizeof(node) * MAX_NODES);
+  scanf("%d", &num_cases);
+  for (case_num = 1; case_num <= num_cases; case_num++) {
+    printf("Tree %d:\n", case_num);
+    scanf("%d %d", &n, &d);
+    num_nodes = read_tree(nodes, n);
+    score_all(nodes, num_nodes, d);
+    qsort(nodes, num_nodes, sizeof(node *), compare);
+    output_info(nodes, num_nodes);
+    if (case_num < num_cases)
+      printf("\n");
+  }
+  return 0;
+}
