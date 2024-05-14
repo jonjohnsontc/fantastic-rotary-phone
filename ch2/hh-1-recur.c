@@ -60,12 +60,12 @@ node *new_street(node *left, node *right) {
 }
 
 int tree_candy(node *tree) {
- if (!tree->left && !tree->right)
-  return tree->candy;
- return tree_candy(tree->left) + tree_candy(tree->right);
+  if (!tree->left && !tree->right)
+    return tree->candy;
+  return tree_candy(tree->left) + tree_candy(tree->right);
 }
 
-// Given a pointer to the root node, return the number of nodes in a tree
+/* Given a pointer to the root node, return the number of nodes in a tree */
 int tree_nodes(node *tree) {
   if (!tree->left && !tree->right)
     return 1;
@@ -82,7 +82,7 @@ int max(int v1, int v2) {
   if (v1 > v2)
     return v1;
   else
-   return v2;
+    return v2;
 }
 
 int tree_height(node *tree) {
@@ -100,19 +100,20 @@ void tree_solve(node *tree) {
 
 node *read_tree_helper(char *line, int *pos) {
   node *tree = malloc(sizeof(node));
-  if (line[*pos] == '(') {  // is street
+  if (line[*pos] == '(') { /* is street */
     (*pos)++;
     tree->left = read_tree_helper(line, pos);
     (*pos)++;
     tree->right = read_tree_helper(line, pos);
     (*pos)++;
     return tree;
-  } else {     // is house
+  } else { /* is house */
     tree->left = NULL;
     tree->right = NULL;
     tree->candy = line[*pos] - '0';
-    (*pos)++; 
-    int char_is_number = line[*pos] != ')' && line[*pos] != ' ' && line[*pos] != '\0'; 
+    (*pos)++;
+    int char_is_number =
+        line[*pos] != ')' && line[*pos] != ' ' && line[*pos] != '\0';
     if (char_is_number) {
       tree->candy = tree->candy * 10 + line[*pos] - '0';
       (*pos)++;
@@ -126,24 +127,15 @@ node *read_tree(char *line) {
   return read_tree_helper(line, &pos);
 }
 
+#define TEST_CASES 5
 int main(void) {
-  node *four = new_house(4);
-  node *nine = new_house(9);
-  node *B = new_street(four, nine);
-  node *fifteen = new_house(15);
-  node *C = new_street(B, fifteen);
-  node *two = new_house(2);
-  node *D = new_street(C, two);
-  node *six = new_house(6);
-  node *E = new_street(six, D);
-  node *seventy_two = new_house(72);
-  node *three = new_house(3);
-  node *A = new_street(seventy_two, three);
-  node *F = new_street(A, E);
-  node *seven = new_house(7);
-  node *forty_one = new_house(41);
-  node *G = new_street(seven, forty_one);
-  node *H = new_street(F, G);
-  tree_solve(H);
+  int i;
+  char line[SIZE + 1];
+  node *tree;
+  for (i = 0; i < TEST_CASES; i++) {
+    gets(line);
+    tree = read_tree(line);
+    tree_solve(tree);
+  }
   return 0;
 }
