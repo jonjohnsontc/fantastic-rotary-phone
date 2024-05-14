@@ -65,6 +65,7 @@ int read_tree(node *nodes[], int num_lines) {
         num_nodes++;
       } else
         free(child_name);
+      parent_node->children[j] = child_node;
     }
   }
   return num_nodes;
@@ -72,18 +73,21 @@ int read_tree(node *nodes[], int num_lines) {
 
 int score_one(node *n, int d) {
   int total, i;
-  if (d == 1)
+  if (d == 1) {
     return n->num_children;
+  }
   total = 0;
-  for (i = 0; i < n->num_children; i++)
+  for (i = 0; i < n->num_children; i++) {
     total = total + score_one(n->children[i], d - 1);
+  }
   return total;
 }
 
 void score_all(node **nodes, int num_nodes, int d) {
   int i;
-  for (i = 0; i < num_nodes; i++)
+  for (i = 0; i < num_nodes; i++) {
     nodes[i]->score = score_one(nodes[i], d);
+  }
 }
 
 int compare(const void *v1, const void *v2) {
@@ -116,7 +120,6 @@ int main(void) {
   node **nodes = malloc_safe(sizeof(node) * MAX_NODES);
   scanf("%d", &num_cases);
   for (case_num = 1; case_num <= num_cases; case_num++) {
-    printf("Tree %d:\n", case_num);
     scanf("%d %d", &n, &d);
     num_nodes = read_tree(nodes, n);
     score_all(nodes, num_nodes, d);
