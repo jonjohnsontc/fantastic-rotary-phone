@@ -2,8 +2,7 @@
 
 // Aka highest integer with lowest remainder
 
-int ingest_burgers(int m, int n, int t) { return -1; }
-
+/* return highest integer*/
 int max(int v1, int v2) {
   if (v1 > v2)
     return v1;
@@ -11,6 +10,9 @@ int max(int v1, int v2) {
     return v2;
 }
 
+/* If homer can spend exactly t minutes eating burgers, then return the maximum
+number of burgers he can eat. If he can't spend exactly t minutes eating burgers
+meaning he must spend at least one minute drinking beer, then return -1 */
 int solve_t(int m, int n, int t) {
   if (t == 0)
     return 0;
@@ -30,8 +32,26 @@ int solve_t(int m, int n, int t) {
   return max(m_traverse, n_traverse) + 1;
 }
 
+/* Iteratively run solve_t for t - 1 until we find a solution for m n and t*/
+void solve(int m, int n, int t) {
+  int result, i;
+  result = solve_t(m, n, t);
+  if (result >= 0) {
+    printf("%d\n", result);
+  } else {
+    i = t - 1;
+    result = solve_t(m, n, t - 1);
+    while (result == -1) {
+      i--;
+      result = solve_t(m, n, t - 1);
+    }
+    printf("%d %d\n", result, t - i);
+  }
+}
+
 int main(void) {
   int m, n, t;
-  while (scanf("%d %d %d", &m, &n, &t) != 0)
-    printf("%d", ingest_burgers(m, n, t));
+  while (scanf("%d %d %d", &m, &n, &t) != EOF)
+    solve(m, n, t);
+  return 0;
 }
