@@ -40,10 +40,10 @@ void solve(int m, int n, int t) {
     printf("%d\n", result);
   } else {
     i = t - 1;
-    result = solve_t(m, n, t - 1);
+    result = solve_t(m, n, i);
     while (result == -1) {
       i--;
-      result = solve_t(m, n, t - 1);
+      result = solve_t(m, n, i);
     }
     printf("%d %d\n", result, t - i);
   }
