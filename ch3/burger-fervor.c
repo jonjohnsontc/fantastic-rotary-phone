@@ -2,7 +2,7 @@
 
 // Aka highest integer with lowest remainder
 
-// tracks solve_t calls
+/* tracks solve_t calls */
 unsigned long long total_calls;
 
 /* return highest integer*/
