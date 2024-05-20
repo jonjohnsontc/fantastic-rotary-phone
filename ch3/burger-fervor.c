@@ -2,6 +2,9 @@
 
 // Aka highest integer with lowest remainder
 
+// tracks solve_t calls
+unsigned long long total_calls;
+
 /* return highest integer*/
 int max(int v1, int v2) {
   if (v1 > v2)
@@ -14,6 +17,7 @@ int max(int v1, int v2) {
 number of burgers he can eat. If he can't spend exactly t minutes eating burgers
 meaning he must spend at least one minute drinking beer, then return -1 */
 int solve_t(int m, int n, int t) {
+  total_calls++;
   if (t == 0)
     return 0;
   int m_traverse;
@@ -35,6 +39,7 @@ int solve_t(int m, int n, int t) {
 /* Iteratively run solve_t for t - 1 until we find a solution for m n and t*/
 void solve(int m, int n, int t) {
   int result, i;
+  total_calls = 0;
   result = solve_t(m, n, t);
   if (result >= 0) {
     printf("%d\n", result);
@@ -47,6 +52,7 @@ void solve(int m, int n, int t) {
     }
     printf("%d %d\n", result, t - i);
   }
+  printf("Total calls to solve_t: %llu\n", total_calls);
 }
 
 int main(void) {
