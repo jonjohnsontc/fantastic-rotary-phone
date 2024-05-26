@@ -1,0 +1,28 @@
+// Recursive Solution from Book
+// arrays store games starting in index 1, rather than index 0
+// to match up with games played.
+
+
+int max(int v1, int v2) {
+  if (v1 > v2)
+    return v1;
+  else
+    return v2;
+}
+
+int solve(char outcome1[], char outcome2[], int goals1[], int goals2[], int i,
+          int j) {
+  int first, second, third, fourth;
+  if (i == 0 || j == 0)
+    return 0;
+  if ((outcome1[i] == 'W' && outcome2[j] == 'L' && goals1[i] > goals2[j]) ||
+      (outcome1[i] == 'L' && outcome2[j] == 'W' && goals1[i] < goals2[j]))
+    first = solve(outcome1, outcome2, goals1, goals2, i - 1, j - 1) +
+            goals1[i] + goals2[j];
+  else
+    first = 0;
+  second = solve(outcome1, outcome2, goals1, goals2, i - 1, j - 1);
+  third = solve(outcome1, outcome2, goals1, goals2, i - 1, j);
+  fourth = solve(outcome1, outcome2, goals1, goals2, i, j - 1);
+  return max(first, max(second, max(third, fourth)));
+}

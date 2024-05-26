@@ -19,7 +19,7 @@ int compute_highest_score(int no_games, char hawks_games[], int hawks_scores[],
 
 // I know that I have to maintain an order between the games
 // i.e.,
-// Geese Game 2 can't count as a win against
+// Geese Game 2 can't count as a win against 
 int main(void) {
   int games; // no of games played
   size_t sz, size = 0;
