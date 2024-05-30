@@ -11,11 +11,14 @@ int min(int v1, int v2) {
 }
 
 int solve(int cost[], int n, int i, int j, int dp[SIZE + 1][SIZE + 1]) {
+  if (dp[i][j] != UNSET)
+    return dp[i][j];
+
   int first, second;
   first = 0;
   second = 0;
   if (first == -1 && second == -1) {
-    dp[i][j] = -1;
+    dp[i][j] = IMPOSSIBLE;
     return dp[i][j];
   } else if (second == -1) {
     dp[i][j] = first + cost[i];
