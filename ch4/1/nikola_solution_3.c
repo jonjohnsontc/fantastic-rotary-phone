@@ -13,10 +13,14 @@ int min(int v1, int v2) {
 int solve(int cost[], int n, int i, int j, int dp[SIZE + 1][SIZE + 1]) {
   if (dp[i][j] != UNSET)
     return dp[i][j];
-
   int first, second;
+  int result;
   first = 0;
   second = 0;
+  for (j = n; j >= 1; j--)
+    for (i = 1; i < n; i++) {
+      dp[i][j] = solve(cost, n, i, j, dp);
+    }
   if (first == -1 && second == -1) {
     dp[i][j] = IMPOSSIBLE;
     return dp[i][j];
@@ -44,9 +48,6 @@ int main(void) {
     for (j = 1; j < SIZE + 1; j++)
       dp[i][j] = UNSET;
 
-  for (j = n; j >= 1; j--)
-    for (i = 1; i < n; i++) {
-      result = solve(cost, n, i, j, dp);
-    }
+  result = solve(cost, n, i, j, dp);
   printf("%d\n", result);
 }
