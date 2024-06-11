@@ -98,7 +98,7 @@ void solve(int pawn_row, int pawn_col, int knight_row, int knight_col,
     cur_pawn_row++;
     num_moves++;
   }
-  printf("Loss in %d knight move(s).\n", num_moves - pawn_row - 1);
+  printf("Loss in %d knight move(s).\n", num_rows - pawn_row - 1);
 }
 
 int main(void) {
