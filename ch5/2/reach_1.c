@@ -45,6 +45,12 @@ void add_position(int from_height, int to_height, int max_height,
   }
 }
 
+/*
+Finding distances from different nodes in this manner acumulates function
+calls in two manners, from jump edges and from fall edges
+
+Fall edges accumulate at a rate of h(h + 1)/2, which looks quadratic to me
+*/
 void find_distances(int target_height, int jump_distance, int itching[],
                     board min_moves) {
   static positions cur_positions, new_positions;
