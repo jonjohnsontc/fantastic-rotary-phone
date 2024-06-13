@@ -28,6 +28,7 @@
     2h - j >= h and we'd already be at h, so 2h will definitely not be optimal
     (but earlier ones may be)
 */
+#include <stdio.h>
 #define SIZE 1000000
 
 typedef int board[SIZE * 2];
@@ -70,4 +71,30 @@ void find_distances(int target_height, int jump_distance, int itching[],
     for (i = 0; i < num_cur_positions; i++)
       cur_positions[i] = new_positions[i];
   }
+}
+
+void solve(int target_height, board min_moves) {
+  int best = -1;
+  int i;
+  for (i = target_height; i < target_height * 2; i++)
+    if (min_moves[i] != -1 && (best == -1 || min_moves[i] < best))
+      best = min_moves[i];
+  printf("%d\n", best);
+}
+
+int main(void) {
+  int target_height, jump_distance, num_itching_sections;
+  static int itching[SIZE * 2] = {0};
+  static board min_moves;
+  int i, j, itch_start, itch_end;
+  scanf("%d%d%d", &target_height, &jump_distance, &num_itching_sections);
+  for (i = 0; i < num_itching_sections; i++) {
+    scanf("%d%d", &itch_start, &itch_end);
+    for (j = itch_start; j <= itch_end; j++)
+      itching[j] = 1;
+  }
+  find_distances(target_height, jump_distance, itching, min_moves);
+  solve(target_height, min_moves);
+
+  return 0;
 }
