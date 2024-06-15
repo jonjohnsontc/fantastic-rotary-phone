@@ -72,12 +72,14 @@ void find_distances(edge *adj_list[], int num_langs, board min_costs) {
     for (i = 0; i < num_cur_positions; i++) {
       from_lang = cur_positions[i];
       e = adj_list[from_lang];
+
       while (e) {
         add_position(from_lang, e->to_lang, new_positions, &num_new_positions,
                      min_moves);
         e = e->next;
       }
     }
+
     for (i = 0; i < num_new_positions; i++) {
       added_lang = new_positions[i];
       e = adj_list[added_lang];
@@ -90,10 +92,23 @@ void find_distances(edge *adj_list[], int num_langs, board min_costs) {
       }
       min_costs[added_lang] = best;
     }
+
     num_cur_positions = num_new_positions;
     for (i = 0; i < num_cur_positions; i++)
       cur_positions[i] = new_positions[i];
   }
+}
+
+void solve(int num_langs, board min_costs) {
+  int i, total = 0;
+  for (i = 1; i < num_langs; i++)
+    if (min_costs[i] == -1) {
+      printf("Impossible\n");
+      return;
+    } else {
+      total = total + min_costs[i];
+    }
+  printf("%d\n", total);
 }
 
 int main(void) {
@@ -103,12 +118,11 @@ int main(void) {
   char *from_lang, *to_lang;
   edge *e;
   static board min_costs;
-  scanf("%d%d", &num_targets, &num_translators);
-  lang_names[0] = "English"; // we start with english
+  scanf("%d%d ", &num_targets, &num_translators);
+  lang_names[0] = "English";
 
-  for (i = 1; i <= num_targets; i++) {
+  for (i = 1; i <= num_targets; i++)
     lang_names[i] = read_word(WORD_LENGTH);
-  }
 
   for (i = 0; i < num_translators; i++) {
     from_lang = read_word(WORD_LENGTH);
