@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/_types/_null.h>
+#include <string.h>
 
 char *read_word(int size) {
   char *str;
@@ -36,6 +36,65 @@ typedef struct edge {
 
 typedef int board[MAX_LANGS];
 typedef int positions[MAX_LANGS];
+
+int find_lang(char *langs[], char *lang) {
+  int i = 0;
+  while (strcmp(langs[i], lang) != 0)
+    i++;
+  return i;
+}
+
+void add_position(int from_lang, int to_lang, positions new_positions,
+                  int *num_new_positions, board min_moves) {
+  if (min_moves[to_lang] == -1) {
+    min_moves[to_lang] = 1 + min_moves[from_lang];
+    new_positions[*num_new_positions] = to_lang;
+    (*num_new_positions)++;
+  }
+}
+
+void find_distances(edge *adj_list[], int num_langs, board min_costs) {
+  static board min_moves;
+  static positions cur_positions, new_positions;
+  int num_cur_positions, num_new_positions;
+  int i, from_lang, added_lang, best;
+  edge *e;
+  for (i = 0; i < num_langs; i++) {
+    min_moves[i] = -1;
+    min_costs[i] = -1;
+  }
+  min_moves[0] = 0;
+  cur_positions[0] = 0;
+  num_cur_positions = 1;
+
+  while (num_cur_positions > 0) {
+    num_new_positions = 0;
+    for (i = 0; i < num_cur_positions; i++) {
+      from_lang = cur_positions[i];
+      e = adj_list[from_lang];
+      while (e) {
+        add_position(from_lang, e->to_lang, new_positions, &num_new_positions,
+                     min_moves);
+        e = e->next;
+      }
+    }
+    for (i = 0; i < num_new_positions; i++) {
+      added_lang = new_positions[i];
+      e = adj_list[added_lang];
+      best = -1;
+      while (e) {
+        if (min_moves[e->to_lang] + 1 == min_moves[added_lang] &&
+            (best == -1 || e->cost < best))
+          best = e->cost;
+        e = e->next;
+      }
+      min_costs[added_lang] = best;
+    }
+    num_cur_positions = num_new_positions;
+    for (i = 0; i < num_cur_positions; i++)
+      cur_positions[i] = new_positions[i];
+  }
+}
 
 int main(void) {
   static edge *adj_list[MAX_LANGS] = {NULL};
