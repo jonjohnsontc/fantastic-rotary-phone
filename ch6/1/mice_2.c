@@ -1,3 +1,8 @@
+/*
+    version of the first solution but only running djikstras algorithm once,
+    against a reversed weighted graph to find the shortest path from the
+    exit cell to the starting cell
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_CELLS 100
@@ -18,10 +23,12 @@ int find_time(edge *adj_list[], int num_cells, int from_cell, int exit_cell) {
     min_times[i] = -1;
   }
   min_times[from_cell] = 0;
-  for (i = 0; i < num_cells; i++) {
+  for (i = 0; i < num_cells;
+       i++) { // outer loop | sets cell to done and updates shortest paths
     min_time = -1;
     found = 0;
-    for (j = 1; j <= num_cells; j++) {
+    for (j = 1; j <= num_cells; j++) { // inner loop | finds min_time value for
+                                       // paths that aren't finished
       if (!done[j] && min_times[j] >= 0) {
         if (min_time == -1 || min_times[j] < min_time) {
           min_time = min_times[j];
@@ -34,6 +41,20 @@ int find_time(edge *adj_list[], int num_cells, int from_cell, int exit_cell) {
       break;
     done[min_time_index] = 1;
     
+    // Ideally I only want djikstra's algorithm to run once, so I don't think this is the
+    // right way to do things. I think I should effectively run this loop twice, Once for the first cell,
+    // and then once for the exit_cell
+
+    // I believe this because:
+      // The only cell with a distance of 0 from the `from_cell` is the same cell
+      // In order for any routes to be found outside of the self-self route, 
+        // it would have to be run for some completed cell(s)
+    // Although, just because I run djikstras for the first cell and the last, is there
+    // any guarantee that the second shortest route is the one for the exit cell (I don't think so!)
+    // So, in that case, I feel like this is the right route, but I should time everything specifically to be sure.
+    if (min_time_index == exit_cell)
+      return min_times[exit_cell];
+
     e = adj_list[min_time_index];
     while (e) {
       old_time = min_times[e->to_cell];
@@ -66,10 +87,10 @@ int main(void) {
         fprintf(stderr, "malloc error");
         exit(1);
       }
-      e->to_cell = to_cell;
+      e->to_cell = from_cell;
       e->length = length;
-      e->next = adj_list[from_cell];
-      adj_list[from_cell] = e;
+      e->next = adj_list[to_cell];
+      adj_list[to_cell] = e;
     }
 
     total = 0;
