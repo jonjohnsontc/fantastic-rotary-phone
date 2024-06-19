@@ -3,8 +3,10 @@
     against a reversed weighted graph to find the shortest path from the
     exit cell to the starting cell
 */
+#include <bits/time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #define MAX_CELLS 100
 
 typedef struct edge {
@@ -67,6 +69,9 @@ int find_time(edge *adj_list[], int num_cells, int from_cell, int exit_cell) {
 }
 
 int main(void) {
+  struct timespec start, end;
+  double elapsed;
+  
   static edge *adj_list[MAX_CELLS + 1];
   int num_cases, case_num, i;
   int num_cells, exit_cell, time_limit, num_edges;
@@ -74,6 +79,7 @@ int main(void) {
   int total, min_time;
   edge *e;
 
+  clock_gettime(CLOCK_MONOTONIC, &start);
   scanf("%d", &num_cases);
   for (case_num = 1; case_num <= num_cases; case_num++) {
     scanf("%d%d%d", &num_cells, &exit_cell, &time_limit);
@@ -103,5 +109,9 @@ int main(void) {
     if (case_num < num_cases)
       printf("\n");
   }
+  clock_gettime(CLOCK_MONOTONIC, &end);
+  elapsed = (end.tv_sec - start.tv_sec) + 
+              (end.tv_nsec - start.tv_nsec) / 1000000000.0;
+  printf("Elapsed time: %.9f seconds\n", elapsed);
   return 0;
 }
