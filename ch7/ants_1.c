@@ -26,6 +26,22 @@ int can_feed(int node, double liquid, edge *adj_list[], int liquid_needed[]) {
   return ok;
 }
 
+#define HIGHEST 2000000000
+
+void solve(edge *adj_list[], int liquid_needed[]) {
+  double low, high, mid;
+  low = 0;
+  high = HIGHEST;
+  while (high - low > 0.00001) {
+    mid = (low + high) / 2;
+    if (can_feed(1, mid, adj_list, liquid_needed))
+      high = mid;
+    else
+     low = mid;
+  }
+  printf("%.4lf\n", high);
+}
+
 int main(void) {
   static edge *adj_list[MAX_NODES + 1] = {NULL};
   static int liquid_needed[MAX_NODES + 1];
@@ -50,7 +66,6 @@ int main(void) {
 
   for (i = 1; i <= num_nodes; i++)
     scanf("%d", &liquid_needed[i]);
-  // solve(adj_list, liquid_needed);
-  printf("%d\n", can_feed(1, 17, adj_list, liquid_needed));
+  solve(adj_list, liquid_needed);
   return 0;
 }
