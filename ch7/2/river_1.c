@@ -20,8 +20,22 @@ int can_make_min_distance(int distance, int rocks[], int num_rocks,
   return removed <= num_remove;
 }
 
+void solve(int rocks[], int num_rocks, int num_remove, int length) {
+  int low, high, mid;
+  low = 0;
+  high = length + 1;
+  while (high - low > 1) {
+    mid = (low + high) / 2;
+    if (can_make_min_distance(mid, rocks, num_rocks, num_remove, length))
+      low = mid;
+    else
+      high = mid;
+  }
+  printf("%d\n", low);
+}
+
 int main(void) {
   int rocks[4] = {2, 4, 5, 8};
-  printf("%d\n", can_make_min_distance(6, rocks, 4, 2, 12));
+  solve(rocks, 0, 0, 12);
   return 0;
 }
