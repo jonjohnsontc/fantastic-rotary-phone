@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #define L_RIVER_MAX 1000000000
 #define N_ROCKS_MAX 50000
 
@@ -34,8 +35,19 @@ void solve(int rocks[], int num_rocks, int num_remove, int length) {
   printf("%d\n", low);
 }
 
+int compare(const void *v1, const void *v2) {
+  int num1 = *(const int *)v1;
+  int num2 = *(const int *)v2;
+  return num1 - num2;
+}
+
 int main(void) {
-  int rocks[4] = {2, 4, 5, 8};
-  solve(rocks, 0, 0, 12);
+  static int rocks[N_ROCKS_MAX];
+  int length, num_rocks, num_remove, i;
+  scanf("%d%d%d", &length, &num_rocks, &num_remove);
+  for (i = 0; i < num_rocks; i++)
+    scanf("%d", &rocks[i]);
+  qsort(rocks, num_rocks, sizeof(int), compare);
+  solve(rocks, num_rocks, num_remove, length);
   return 0;
 }
