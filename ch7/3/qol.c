@@ -24,7 +24,7 @@ int median(int top_row, int left_col, int bottom_row, int right_col, board q) {
   return cur_rectangle[num_cur_rectangle / 2];
 }
 
-int rectangle(int r, int c, int w, int q[3001][3001]) {
+int rectangle(int r, int c, int h, int w, int q[3001][3001]) {
   int top_row, left_col, bottom_row, right_col;
   int best = r * c + 1;
   int result;
