@@ -1,5 +1,5 @@
 /*
-  Exhaustive iterative search for median block score
+  Implementing Binary Searchin into QOL.
 */
 #include <stdlib.h>
 #define MAX_ROWS 3001
@@ -27,17 +27,43 @@ int median(int top_row, int left_col, int bottom_row, int right_col, board q) {
   return cur_rectangle[num_cur_rectangle / 2];
 }
 
-int rectangle(int r, int c, int h, int w, int q[3001][3001]) {
+int can_make_quality(int quality, int r, int c, int h, int w, board q) {
+  static int zero_one[MAX_ROWS][MAX_COLS];
+  int i, j;
   int top_row, left_col, bottom_row, right_col;
-  int best = r * c + 1;
-  int result;
+  int total;
+
+  for (i = 0; i < r; i++)
+    for (j = 0; j < c; j++)
+      if (q[i][j] <= quality)
+        zero_one[i][j] = -1;
+      else
+        zero_one[i][j] = 1;
+
   for (top_row = 0; top_row < r - h + 1; top_row++)
     for (left_col = 0; left_col < c - w + 1; left_col++) {
       bottom_row = top_row + h - 1;
       right_col = left_col + w - 1;
-      result = median(top_row, left_col, bottom_row, right_col, q);
-      if (result < best)
-        best = result;
+      total = 0;
+      for (i = top_row; i <= bottom_row; i++)
+        for (j = left_col; j <= right_col; j++)
+          total = total + zero_one[i][j];
+      if (total <= 0)
+        return 1;
     }
-  return best;
+  return 0;
+}
+
+int rectangle(int r, int c, int h, int w, board q) {
+  int low, high, mid;
+  low = 0;
+  high = r * c + 1;
+  while (high - low > 1) {
+    mid = (low + high) / 2;
+    if (can_make_quality(mid, r, c, h, w, q))
+      high = mid;
+    else
+      low = mid;
+  }
+  return high;
 }
