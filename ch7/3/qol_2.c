@@ -1,5 +1,5 @@
 /*
-  Implementing Binary Searchin into QOL.
+  Implementing Binary Search into QOL.
 */
 #include <stdlib.h>
 #define MAX_ROWS 3001
