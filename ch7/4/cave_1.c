@@ -1,3 +1,6 @@
+/*
+  Linear search designed to solve 7-4 through the first constraint
+*/
 int tryCombination(int switch_positions[]);
 void answer(int switch_positions[], int door_for_switch[]);
 
