@@ -86,3 +86,46 @@ heap_element min_heap_extract(heap_element heap[], int *num_heap) {
   }
   return remove;
 }
+
+int main(void) {
+  static int used[MAX_RECEIPTS] = {0};
+  static heap_element max_heap[MAX_RECEIPTS + 1];
+  static heap_element min_heap[MAX_RECEIPTS + 1];
+  int num_days, receipt_index_today;
+  int receipt_index = 0;
+  long long total_prizes = 0;
+  int i, j, cost;
+  int max_num_heap = 0, min_num_heap = 0;
+  heap_element max_element, min_element;
+  scanf("%d", &num_days);
+
+  for (i = 0; i < num_days; i++) {
+    scanf("%d", &receipt_index_today);
+    for (j = 0; j < receipt_index_today; j++) {
+      scanf("%d", &cost);
+      max_heap_insert(max_heap, &max_num_heap, receipt_index, cost);
+      min_heap_insert(min_heap, &min_num_heap, receipt_index, cost);
+      receipt_index++;
+    }
+
+    // Receipt Extraction
+    // Ideally, we'd remove the min and max receipts from both the min
+    // and max heaps, however, we don't know where it is. So, we keep a used
+    // array and mark whenever a receipt has been removed from either heap.
+    // Here we check the min and max receipts. If they've been used already,
+    // we'll extract another receipt from the heap until the receipt hasn't
+
+    max_element = max_heap_extract(max_heap, &max_num_heap);
+    while (used[max_element.receipt_index])
+      max_element = max_heap_extract(max_heap, &max_num_heap);
+    used[max_element.receipt_index] = 1;
+
+    min_element = min_heap_extract(min_heap, &min_num_heap);
+    while (used[min_element.receipt_index])
+      min_element = min_heap_extract(min_heap, &min_num_heap);
+    used[min_element.receipt_index] = 1;
+    total_prizes += max_element.cost - min_element.cost;
+  }
+  printf("%lld\n", total_prizes);
+  return 0;
+}
