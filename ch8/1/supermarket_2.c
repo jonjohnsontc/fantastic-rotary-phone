@@ -110,7 +110,8 @@ int main(void) {
 
     // Receipt Extraction
     // Ideally, we'd remove the min and max receipts from both the min
-    // and max heaps, however, we don't know where it is. So, we keep a used
+    // and max heaps, however, we don't know where the max in the min heap is,
+    // or where the min in the max heap is. So, we keep a used
     // array and mark whenever a receipt has been removed from either heap.
     // Here we check the min and max receipts. If they've been used already,
     // we'll extract another receipt from the heap until the receipt hasn't
