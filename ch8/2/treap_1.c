@@ -1,3 +1,7 @@
+/*
+  Building a treap via linear search for the highest priority node in an array
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
