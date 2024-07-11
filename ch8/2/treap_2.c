@@ -3,6 +3,7 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define MAX_NODES 50000
 #define LABEL_LENGTH 16
 typedef struct segtree_node {
@@ -16,6 +17,12 @@ typedef struct treap_node {
   char *label;
   int priority;
 } treap_node;
+
+int compare(const void *v1, const void *v2) {
+  const treap_node *n1 = v1;
+  const treap_node *n2 = v2;
+  return strcmp(n1->label, n2->label);
+}
 
 void init_segtree(segtree_node segtree[], int node, int left, int right) {
   int mid;
