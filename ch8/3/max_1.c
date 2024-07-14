@@ -10,6 +10,7 @@
   child
 
 */
+#include <stdio.h>
 typedef struct segtree_node {
   int left, right;
   int max_sum;
@@ -100,7 +101,7 @@ node_info query_segtree(segtree_node segtree[], int node, int seq[], int left,
   }
 }
 
-// update segtree at node passed through. Note that this should be
+// Update segtree at node passed through (typically 1). Note that this should be
 // called after the array element has been updated
 node_info update_segtree(segtree_node segtree[], int node, int seq[],
                          int index) {
@@ -116,9 +117,15 @@ node_info update_segtree(segtree_node segtree[], int node, int seq[],
   left_node = segtree[node * 2];
   right_node = segtree[node * 2 + 1];
 
+  // if the index comes before the left child's segment ends, that means that
+  // it's contained in the left segment, so we should update it otherwise,
+  // we should update the right child's segment
   if (index <= left_node.right) {
     left_info = update_segtree(segtree, node * 2, seq, index);
+    right_info = (node_info){right_node.max_sum, right_node.max_element};
+  } else {
     right_info = update_segtree(segtree, node * 2 + 1, seq, index);
+    left_info = (node_info){left_node.max_sum, left_node.max_element};
   }
 
   segtree[node].max_element =
@@ -147,4 +154,31 @@ void init_segtree(segtree_node segtree[], int node, int left, int right) {
   mid = (left + right) / 2;
   init_segtree(segtree, node * 2, left, mid);
   init_segtree(segtree, node * 2 + 1, mid + 1, right);
+}
+
+#define MAX_SEQ 100000
+
+int main(void) {
+  static int seq[MAX_SEQ + 1];
+  static segtree_node segtree[MAX_SEQ * 4 + 1];
+  int num_seq, num_ops, i, op, x, y;
+  char c;
+  scanf("%d", &num_seq);
+  for (i = 1; i <= num_seq; i++)
+    scanf("%d", &seq[i]);
+  init_segtree(segtree, 1, 1, num_seq);
+  fill_segtree(segtree, 1, seq);
+  scanf("%d", &num_ops);
+  for (op = 0; op < num_ops; op++) {
+    scanf(" %c%d%d ", &c, &x, &y);
+
+    if (c == 'U') {
+      seq[x] = y;
+      update_segtree(segtree, 1, seq, x);
+    } else {
+      printf("%d\n", query_segtree(segtree, 1, seq, x, y).max_sum);
+    }
+  }
+
+  return 0;
 }
