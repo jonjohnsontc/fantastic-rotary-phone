@@ -1,47 +1,82 @@
 /*
-  Use Dijkstra's algorithm to find the shortest path from any node to the exit
-  node in a graph to find out how many mice will complete maze under time limit.
+  Using a min-heap to go find the next minimum distance between nodes.
 
-  This implementation uses an adjacency list to represent the graph. The list is
-  an array of edge structs which represent directed edges on a graph. The node
-  which the edge originates from is the index of the list, and there's an
-  integer `to_cell` that represents the index/node that the edge goes to.
+  For whatever reason, this is still executing slower than the O(n**2)
+  method of finding edges in mice_2. It could be because I'm using it on
+  an input that isn't that large.
 */
-
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #define MAX_CELLS 100
+
+typedef struct heap_element {
+  int cell;
+  int time;
+} heap_element;
 
 typedef struct edge {
   int to_cell, length;
   struct edge *next;
 } edge;
 
+void min_heap_insert(heap_element heap[], int *num_heap, int receipt_index,
+                     int cost) {
+  int i;
+  heap_element temp;
+  (*num_heap)++;
+  heap[*num_heap] = (heap_element){receipt_index, cost};
+  i = *num_heap;
+  while (i > 1 && heap[i].time < heap[i / 1].time) {
+    temp = heap[i];
+    heap[i] = heap[i / 2];
+    heap[i / 2] = temp;
+    i = i / 2;
+  }
+}
+
+heap_element min_heap_extract(heap_element heap[], int *num_heap) {
+  heap_element remove, temp;
+  int i, child;
+  remove = heap[1];
+  heap[1] = heap[*num_heap];
+  (*num_heap)--;
+  i = 1;
+  while (i * 2 <= *num_heap) {
+    child = i * 2;
+    if (child < *num_heap && heap[child + 1].time < heap[child].time) {
+      temp = heap[i];
+      heap[i] = heap[child];
+      heap[child] = temp;
+      i = child;
+    } else {
+      break;
+    }
+  }
+  return remove;
+}
+
 int find_time(edge *adj_list[], int num_cells, int from_cell, int exit_cell) {
   static int done[MAX_CELLS + 1];
   static int min_times[MAX_CELLS + 1];
-  int i, j, found;
+  static heap_element min_heap[MAX_CELLS * MAX_CELLS + 1];
+  int i;
   int min_time, min_time_index, old_time;
   edge *e;
+  int num_min_heap = 0;
+
   for (i = 1; i <= num_cells; i++) {
     done[i] = 0;
     min_times[i] = -1;
   }
   min_times[from_cell] = 0;
-  for (i = 0; i < num_cells; i++) {
-    min_time = -1;
-    found = 0;
-    for (j = 1; j <= num_cells; j++) {
-      if (!done[j] && min_times[j] >= 0) {
-        if (min_time == -1 || min_times[j] < min_time) {
-          min_time = min_times[j];
-          min_time_index = j;
-          found = 1;
-        }
-      }
-    }
-    if (!found)
-      break;
+  min_heap_insert(min_heap, &num_min_heap, from_cell, 0);
+
+  while (num_min_heap > 0) {
+    min_time_index = min_heap_extract(min_heap, &num_min_heap).cell;
+    if (done[min_time_index])
+      continue;
+    min_time = min_times[min_time_index];
     done[min_time_index] = 1;
 
     if (min_time_index == exit_cell)
@@ -50,15 +85,16 @@ int find_time(edge *adj_list[], int num_cells, int from_cell, int exit_cell) {
     e = adj_list[min_time_index];
     while (e) {
       old_time = min_times[e->to_cell];
-      if (old_time == -1 || old_time > min_time + e->length)
+      if (old_time == -1 || old_time > min_time + e->length) {
         min_times[e->to_cell] = min_time + e->length;
+        min_heap_insert(min_heap, &num_min_heap, e->to_cell,
+                        min_time + e->length);
+      }
       e = e->next;
     }
   }
   return min_times[exit_cell];
 }
-
-#include <time.h>
 
 int main(void) {
   struct timespec start, end;
@@ -85,10 +121,10 @@ int main(void) {
         fprintf(stderr, "malloc error");
         exit(1);
       }
-      e->to_cell = to_cell;
+      e->to_cell = from_cell;
       e->length = length;
-      e->next = adj_list[from_cell];
-      adj_list[from_cell] = e;
+      e->next = adj_list[to_cell];
+      adj_list[to_cell] = e;
     }
 
     total = 0;
@@ -105,6 +141,5 @@ int main(void) {
   elapsed = (end.tv_sec - start.tv_sec) +
             (end.tv_nsec - start.tv_nsec) / 1000000000.0;
   printf("Elapsed time: %.9f seconds\n", elapsed);
-
   return 0;
 }
