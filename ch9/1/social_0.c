@@ -47,6 +47,11 @@ int main(void) {
   int sizes[M_MAX + 1];
   int no_people, community_max;
   int no_ops;
-  scanf("%d %d", &no_people, &community_max);
+  scanf("%d %d ", &no_people, &community_max);
+  scanf("%d", &no_ops);
+
+  while (no_ops) {
+    no_ops--;
+  }
   return 0;
 }
