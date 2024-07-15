@@ -26,9 +26,11 @@ The book intros this as a problem for the union-find data structure,
 an expansion on the adjacency list data structure used to help solve graph
 problems in chapters 5 and 6.
 
-An adjacency list maps edges between nodes out in an array, where each node
+An ajdjacency list maps edges between nodes out in an array, where each node
 is an index in the edge array, and the edges have an integer representing the
 node they travel to, as well as a length and reference to the next edge.
+
+
 */
 #include <stdio.h>
 #define M_MAX 100000
@@ -38,8 +40,9 @@ typedef struct community {
   struct community *next;
 } community;
 
-int add_friend(int from_user, int to_user);
-void examine(int user1, int user2);
+/**/
+int add_friend(int from_user, int to_user) { int no_friends; };
+int are_friends(community network[], int user1, int user2);
 int get_size(int user);
 
 int main(void) {
@@ -48,7 +51,7 @@ int main(void) {
   int no_people, community_max;
   int no_ops;
   scanf("%d %d ", &no_people, &community_max);
-  scanf("%d", &no_ops);
+  scanf("%d ", &no_ops);
 
   while (no_ops) {
     no_ops--;
