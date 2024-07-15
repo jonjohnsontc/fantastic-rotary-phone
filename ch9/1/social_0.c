@@ -30,10 +30,23 @@ An adjacency list maps edges between nodes out in an array, where each node
 is an index in the edge array, and the edges have an integer representing the
 node they travel to, as well as a length and reference to the next edge.
 */
+#include <stdio.h>
 #define M_MAX 100000
 #define QUERY_MAX 200000
 typedef struct community {
-  int size;
+  int to_user;
   struct community *next;
 } community;
-int main(void) { community network[M_MAX + 1]; }
+
+int add_friend(int from_user, int to_user);
+void examine(int user1, int user2);
+int get_size(int user);
+
+int main(void) {
+  community network[M_MAX + 1]; // represents users communities
+  int sizes[M_MAX + 1];
+  int no_people, community_max;
+  int no_ops;
+  scanf("%d %d", &no_people, &community_max);
+  return 0;
+}
