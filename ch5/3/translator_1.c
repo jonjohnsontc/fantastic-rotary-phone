@@ -59,6 +59,7 @@ void find_distances(edge *adj_list[], int num_langs, board min_costs) {
   int num_cur_positions, num_new_positions;
   int i, from_lang, added_lang, best;
   edge *e;
+  // we initialize cost and moves array to an impossible number
   for (i = 0; i < num_langs; i++) {
     min_moves[i] = -1;
     min_costs[i] = -1;
