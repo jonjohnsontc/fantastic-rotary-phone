@@ -1,3 +1,6 @@
+/*
+  BFS based approach O(n**2) to solving social network problem.
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_PEOPLE 100000
