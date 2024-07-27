@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define MAX_PEOPLE 10000
+#define MAX_PEOPLE 9999
 
 int are_enemies(int person1, int person2, int *parent, int *enemy_of);
 int are_friends(int person1, int person2, int *parent);
@@ -16,7 +16,7 @@ int main(void) {
   scanf("%d", &num_people);
   for (i = 0; i < num_people; i++) {
     parent[i] = i;
-    size[i] = i;
+    size[i] = 1;
     enemy_of[i] = -1;
   }
   scanf("%d%d%d", &op, &person1, &person2);
@@ -34,7 +34,7 @@ int main(void) {
         set_enemies(person1, person2, parent, size, enemy_of);
     } else if (op == 3) { // are friends
       if (are_friends(person1, person2, parent))
-        printf("-1\n");
+        printf("1\n");
       else
         printf("0\n");
     } else if (op == 4) { // are enemies
@@ -65,7 +65,7 @@ int find(int person, int parent[]) {
 int union_sets(int person1, int person2, int parent[], int size[]) {
   int set1, set2, temp;
   set1 = find(person1, parent);
-  set2 = find(person1, parent);
+  set2 = find(person2, parent);
   if (set1 != set2) {
     // union sets
     // set2 will always be the parent, so if set1 is larger
