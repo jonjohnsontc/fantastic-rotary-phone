@@ -18,6 +18,10 @@
 
   the number of possible operations is unconstrained
 
+  thinking about the rules of friends and enemies, can their sets abide
+  by the same rules?
+
+  i don't think so
 */
 #include <stdbool.h>
 #include <stdio.h>
@@ -59,7 +63,18 @@ int main(void) {
   printf("Done\n");
 }
 
+// returns the root of the set that person lies in, by checking
+// the parent array
+int find(int person, int parent[]) {
+  int root = person;
+  while (root != parent[root]) {
+    root = parent[root];
+  }
+  return root;
+}
+
 void setFriends(int *enemies, int *friends, int x, int y) {
+
   printf("set friends b/w %d and %d\n", x, y);
 }
 void setEnemies(int *enemies, int *friends, int x, int y) {
@@ -67,6 +82,26 @@ void setEnemies(int *enemies, int *friends, int x, int y) {
 }
 bool areEnemies(int *enemies, int *friends, int x, int y) {
   printf("are enemies b/w %d and %d\n", x, y);
+
+  int x_rep_friend, y_rep_friend;
+  int x_rep_hater, y_rep_hater;
+
+  x_rep_friend = find(x, friends);
+  y_rep_friend = find(y, friends);
+
+  x_rep_hater = find(x, enemies);
+  y_rep_hater = find(y, enemies);
+  /*
+   if x * y then y * x
+   not x * x (can't hate yourself)
+
+   if x * y and y * z then x ~ z (enemy of my enemy is my friend)
+   if x ~ y and y * z then x * z (i hate your haters)
+  */
+  if (x_rep_friend == y_rep_friend || y_rep_hater == x_rep_hater)
+    return false;
+  else if (x_rep_hater == y_rep_friend || y_rep_hater == x_rep_friend)
+    return true;
   return false;
 }
 bool areFriends(int *enemies, int *friends, int x, int y) {
