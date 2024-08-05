@@ -17,7 +17,7 @@ int lowest_index(int pieces[], int num_pieces, int at_least) {
     if (pieces[mid] < at_least)
       low = mid + 1;
     else
-      high = mid + 1;
+      high = mid;
   }
   return low;
 }
@@ -79,7 +79,6 @@ void solve(int yokan[], int *pieces_for_flavor[], int num_of_flavor[], int left,
       continue;
     result = num_in_range(pieces_for_flavor[flavor], num_of_flavor[flavor],
                           left, right);
-    // can we make the second friend happy?
     if (result >= threshold) {
       printf("YES\n");
       return;
@@ -90,7 +89,6 @@ void solve(int yokan[], int *pieces_for_flavor[], int num_of_flavor[], int left,
 
 #define MAX_FLAVORS 200000
 
-// assign flavor locations in each flavor array
 void init_flavor_arrays(int yokan[], int num_pieces, int *pieces_for_flavor[]) {
   static int cur_of_flavor[MAX_FLAVORS + 1];
   int i, flavor, j;
