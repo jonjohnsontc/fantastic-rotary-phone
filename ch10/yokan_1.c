@@ -90,6 +90,7 @@ void solve(int yokan[], int *pieces_for_flavor[], int num_of_flavor[], int left,
 
 #define MAX_FLAVORS 200000
 
+// assign flavor locations in each flavor array
 void init_flavor_arrays(int yokan[], int num_pieces, int *pieces_for_flavor[]) {
   static int cur_of_flavor[MAX_FLAVORS + 1];
   int i, flavor, j;
@@ -113,11 +114,15 @@ int main(void) {
   // wont be the same each time the program is run
   srand((unsigned)time(NULL));
   scanf("%d%d", &num_pieces, &num_flavors);
+
+  // fill flavor array, and keep track of how many pieces of
+  // each flavor
   for (i = 1; i <= num_pieces; i++) {
     scanf("%d", &yokan[i]);
     num_of_flavor[yokan[i]]++;
   }
 
+  // allocate memory for each flavor array
   for (i = 1; i <= num_flavors; i++) {
     pieces_for_flavor[i] = malloc(num_of_flavor[i] * sizeof(int));
     if (pieces_for_flavor[i] == NULL) {
