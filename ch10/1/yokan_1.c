@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 // Set num_attempts high enough that we can find 2 one-third satisfying
-// numbers for up to 200,000 different examples
+// numbers for up to 200,000 different examples. There is a chance we
+// could have false negatives, however.
 #define NUM_ATTEMPTS 60
 // return random number in range of width values starting with left
 // number will be in-between 0 and width - 1
