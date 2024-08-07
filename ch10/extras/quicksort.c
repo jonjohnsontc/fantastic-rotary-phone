@@ -27,6 +27,9 @@ void quicksort(int values[], int n) {
   small_count = 0;
   big_count = 0;
 
+  // locate pivot value and move to start of array
+  // the start of the array will remain out of the way
+  // of the rest of the algorithm
   pivot_index = rand() % n;
   swap(&values[0], &values[pivot_index]);
   pivot = values[0];
@@ -43,6 +46,7 @@ void quicksort(int values[], int n) {
   quicksort(small_values, small_count);
   quicksort(big_values, big_count);
 
+  // put values back into single array inclusive of pivot value
   for (i = 0; i < small_count; i++)
     values[i] = small_values[i];
   values[small_count] = pivot;
